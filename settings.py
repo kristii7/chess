@@ -1,0 +1,13 @@
+WIDTH = 640
+HEIGHT = 720   # extra space for text
+ROWS = 8
+COLS = 8
+SQ_SIZE = WIDTH // COLS
+
+WHITE = (240, 240, 240)
+GRAY = (120, 120, 120)
+BLUE = (50, 150, 255)
+RED = (200, 50, 50)
+BLACK = (0, 0, 0)
+GREEN = (0, 200, 50)
+PINK = (255, 182, 193)
