@@ -45,5 +45,7 @@ class AI:
             return min_eval, best_move
 
     def choose_move(self, board):
+        if board.is_game_over():
+            return None
         _, move = self.minimax(board, self.depth, False)
         return move

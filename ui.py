@@ -64,12 +64,6 @@ class UI:
             img = self.images['w' + p]
             self.screen.blit(img, (180 + i * 70, 210))
 
-    def draw_move_history(self, board):
-        moves = list(board.move_stack)[-10:]
-        y = 650
-        for i, m in enumerate(moves):
-            text = self.font.render(str(m), True, BLACK)
-            self.screen.blit(text, (10 + (i % 5) * 120, y))
 
     def show_message(self, text, color=RED):
         label = self.big_font.render(text, True, color)

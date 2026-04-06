@@ -5,6 +5,7 @@ from ui import UI
 from ai import AI
 from settings import *
 
+# ------------------- INIT -------------------
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Complete Chess")
@@ -15,47 +16,88 @@ ui = UI(screen)
 ai = AI()
 
 running = True
+
+# ------------------- MAIN LOOP -------------------
 while running:
     clock.tick(60)
 
+    # ------------------- EVENTS -------------------
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-        if event.type == pygame.MOUSEBUTTONDOWN and game.board.turn:
+        # ⌨️ KEYBOARD
+        if event.type == pygame.KEYDOWN:
+            # Undo last two moves (player + AI)
+            if event.key == pygame.K_u:
+                for _ in range(2):
+                    if len(game.board.move_stack) > 0:
+                        game.board.pop()
+
+            # Restart game
+            if event.key == pygame.K_r:
+                game = Game()
+
+        # 🖱 MOUSE
+        if event.type == pygame.MOUSEBUTTONDOWN:
             x, y = pygame.mouse.get_pos()
-            if y < WIDTH:
+
+            # 🟢 Promotion popup handling
+            if game.awaiting_promotion:
+                if 200 <= y <= 280:
+                    index = (x - 180) // 70
+                    if 0 <= index <= 3:
+                        promo = [chess.QUEEN, chess.ROOK, chess.BISHOP, chess.KNIGHT][index]
+                        game.promotion_move.promotion = promo
+                        game.board.push(game.promotion_move)
+                        game.awaiting_promotion = False
+                        game.promotion_move = None
+                continue  # Skip normal click if promotion popup is active
+
+            # 🟢 Normal piece selection / move
+            if game.board.turn and y < WIDTH:
                 col = x // SQ_SIZE
                 row = y // SQ_SIZE
-                square = chess.square(col, 7-row)
+                square = chess.square(col, 7 - row)
                 game.select(square)
 
-    # AI move
+    # ------------------- AI MOVE -------------------
     if not game.board.turn and not game.board.is_game_over():
         move = ai.choose_move(game.board)
-        game.board.push(move)
+        if move:
+            game.board.push(move)
 
+    # ------------------- DRAWING -------------------
     ui.draw_board()
     ui.highlight_moves(game.valid_moves)
     ui.draw_pieces(game.board)
+
+    # Highlight selected square
+    if game.selected is not None:
+        col = chess.square_file(game.selected)
+        row = 7 - chess.square_rank(game.selected)
+        pygame.draw.rect(screen, GREEN,
+                         (col * SQ_SIZE, row * SQ_SIZE, SQ_SIZE, SQ_SIZE), 4)
+
+    # Move history
     ui.draw_move_history(game.board)
 
+    # Promotion popup
+    if game.awaiting_promotion:
+        ui.draw_promotion_popup()
+
+    # Turn display
+    turn_text = "White" if game.board.turn else "Black"
+    label = ui.font.render(turn_text, True, BLACK)
+    screen.blit(label, (650, 50))
+
+    # Check / Checkmate messages
     if game.board.is_checkmate():
         ui.show_message("CHECKMATE")
     elif game.board.is_check():
         ui.show_message("CHECK")
 
-    if game.awaiting_promotion and event.type == pygame.MOUSEBUTTONDOWN:
-        x, y = pygame.mouse.get_pos()
-        if 200 <= y <= 280:
-            index = (x - 180) // 70
-            if 0 <= index <= 3:
-                promo = [chess.QUEEN, chess.ROOK, chess.BISHOP, chess.KNIGHT][index]
-                game.promotion_move.promotion = promo
-                game.board.push(game.promotion_move)
-                game.awaiting_promotion = False
-                game.promotion_move = None
-
     pygame.display.flip()
 
+# ------------------- QUIT -------------------
 pygame.quit()
