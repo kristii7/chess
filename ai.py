@@ -25,7 +25,7 @@ class AI:
         best_move = None
 
 
-        # Move ordering (captures first = better pruning)
+        # Move ordering ( better pruning)
         moves = list(board.legal_moves)
         moves.sort(key=lambda move: board.is_capture(move), reverse=True)
 
@@ -43,7 +43,7 @@ class AI:
 
                 alpha = max(alpha, eval)
 
-                # 🔥 Alpha-Beta pruning
+                # Alpha-Beta pruning
                 if beta <= alpha:
                     break
 
@@ -63,7 +63,7 @@ class AI:
 
                 beta = min(beta, eval)
 
-                # 🔥 Alpha-Beta pruning
+                #  Alpha-Beta pruning
                 if beta <= alpha:
                     break
 

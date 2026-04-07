@@ -1,5 +1,5 @@
 WIDTH = 640
-HEIGHT = 720   # extra space for text
+HEIGHT = 720
 ROWS = 8
 COLS = 8
 SQ_SIZE = WIDTH // COLS

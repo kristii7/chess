@@ -5,7 +5,7 @@ from ui import UI
 from ai import AI
 from settings import *
 
-# ------------------- INIT -------------------
+#  INIT
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Complete Chess")
@@ -17,11 +17,11 @@ ai = AI(depth=4)
 
 running = True
 
-# ------------------- MAIN LOOP -------------------
+# MAIN LOOP
 while running:
     clock.tick(60)
 
-    # ------------------- EVENTS -------------------
+    #  EVENTS
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -52,9 +52,9 @@ while running:
                         game.board.push(game.promotion_move)
                         game.awaiting_promotion = False
                         game.promotion_move = None
-                continue  # Skip normal click if promotion popup is active
+                continue
 
-            #  Normal piece selection / move
+
             if game.board.turn and y < WIDTH:
                 col = x // SQ_SIZE
                 row = y // SQ_SIZE
@@ -82,11 +82,11 @@ while running:
 
     ui.draw_move_history(game.board)
 
-    # Promotion popup
+
     if game.awaiting_promotion:
         ui.draw_promotion_popup()
 
-    # Turn display
+
     turn_text = "White" if game.board.turn else "Black"
     label = ui.font.render(turn_text, True, BLACK)
     screen.blit(label, (650, 50))
@@ -99,5 +99,4 @@ while running:
 
     pygame.display.flip()
 
-# ------------------- QUIT -------------------
 pygame.quit()
