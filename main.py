@@ -13,7 +13,7 @@ pygame.display.set_caption("Complete Chess")
 clock = pygame.time.Clock()
 game = Game()
 ui = UI(screen)
-ai = AI()
+ai = AI(depth=4)
 
 running = True
 
@@ -26,7 +26,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        # ⌨️ KEYBOARD
+        #  KEYBOARD
         if event.type == pygame.KEYDOWN:
             # Undo last two moves (player + AI)
             if event.key == pygame.K_u:
@@ -38,11 +38,11 @@ while running:
             if event.key == pygame.K_r:
                 game = Game()
 
-        # 🖱 MOUSE
+        #  MOUSE
         if event.type == pygame.MOUSEBUTTONDOWN:
             x, y = pygame.mouse.get_pos()
 
-            # 🟢 Promotion popup handling
+            #  Promotion popup handling
             if game.awaiting_promotion:
                 if 200 <= y <= 280:
                     index = (x - 180) // 70
@@ -54,7 +54,7 @@ while running:
                         game.promotion_move = None
                 continue  # Skip normal click if promotion popup is active
 
-            # 🟢 Normal piece selection / move
+            #  Normal piece selection / move
             if game.board.turn and y < WIDTH:
                 col = x // SQ_SIZE
                 row = y // SQ_SIZE
@@ -72,14 +72,14 @@ while running:
     ui.highlight_moves(game.valid_moves)
     ui.draw_pieces(game.board)
 
-    # Highlight selected square
+    #  selected square highlight garne
     if game.selected is not None:
         col = chess.square_file(game.selected)
         row = 7 - chess.square_rank(game.selected)
         pygame.draw.rect(screen, GREEN,
                          (col * SQ_SIZE, row * SQ_SIZE, SQ_SIZE, SQ_SIZE), 4)
 
-    # Move history
+
     ui.draw_move_history(game.board)
 
     # Promotion popup
@@ -91,7 +91,7 @@ while running:
     label = ui.font.render(turn_text, True, BLACK)
     screen.blit(label, (650, 50))
 
-    # Check / Checkmate messages
+    #  check or checkmate message
     if game.board.is_checkmate():
         ui.show_message("CHECKMATE")
     elif game.board.is_check():
