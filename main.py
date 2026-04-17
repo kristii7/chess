@@ -98,9 +98,6 @@ while running:
         ui.draw_promotion_popup()
 
 
-    turn_text = "White" if game.board.turn else "Black"
-    label = ui.font.render(turn_text, True, WHITE)
-    screen.blit(label, (650, 50))
 
     #  check or checkmate message
     if game.board.is_checkmate():

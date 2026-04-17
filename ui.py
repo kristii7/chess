@@ -52,7 +52,7 @@ class UI:
 
     def draw_move_history(self, game):
         start_x = 660
-        start_y = 80
+        start_y = 50
 
         line_height = 25
 
