@@ -50,12 +50,22 @@ class UI:
                 4
             )
 
-    def draw_move_history(self, board):
-        moves = list(board.move_stack)[-10:]
-        y = 650
-        for i, m in enumerate(moves):
-            text = self.font.render(str(m), True, BLACK)
-            self.screen.blit(text, (10 + (i % 5) * 120, y))
+    def draw_move_history(self, game):
+        moves = game.move_descriptions
+
+        start_x = 660
+        start_y = 50
+        line_height = 28
+        max_lines = 18
+
+        visible_moves = moves[-max_lines:]
+
+        for i, text in enumerate(visible_moves):
+            y = start_y + i * line_height
+            label = self.font.render(f"{i + 1}. {text}", True, WHITE)
+            self.screen.blit(label, (start_x, y))
+
+
 
     def draw_promotion_popup(self):
         pygame.draw.rect(self.screen, (200, 200, 200), (160, 200, 320, 80))

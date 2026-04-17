@@ -5,7 +5,7 @@ from ui import UI
 from ai import AI
 from settings import *
 
-#  INIT
+#  initialize
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Complete Chess")
@@ -42,7 +42,7 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             x, y = pygame.mouse.get_pos()
 
-            #  Promotion popup handling
+            # user click
             if game.awaiting_promotion:
                 if 200 <= y <= 280:
                     index = (x - 180) // 70
@@ -61,18 +61,20 @@ while running:
                 square = chess.square(col, 7 - row)
                 game.select(square)
 
-    # ------------------- AI MOVE -------------------
+    #  AI MOVE
     if not game.board.turn and not game.board.is_game_over():
         move = ai.choose_move(game.board)
         if move:
+            desc = game.get_move_description(move)
             game.board.push(move)
+            game.move_descriptions.append(desc)
 
-    # ------------------- DRAWING -------------------
+    #  DRAWING
     ui.draw_board()
     ui.highlight_moves(game.valid_moves)
     ui.draw_pieces(game.board)
 
-    #  selected square highlight garne
+    #  selected square highlight
     if game.selected is not None:
         col = chess.square_file(game.selected)
         row = 7 - chess.square_rank(game.selected)
@@ -80,7 +82,7 @@ while running:
                          (col * SQ_SIZE, row * SQ_SIZE, SQ_SIZE, SQ_SIZE), 4)
 
 
-    ui.draw_move_history(game.board)
+    ui.draw_move_history(game)
 
 
     if game.awaiting_promotion:
@@ -88,7 +90,7 @@ while running:
 
 
     turn_text = "White" if game.board.turn else "Black"
-    label = ui.font.render(turn_text, True, BLACK)
+    label = ui.font.render(turn_text, True, WHITE)
     screen.blit(label, (650, 50))
 
     #  check or checkmate message

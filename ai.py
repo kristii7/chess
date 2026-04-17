@@ -25,7 +25,7 @@ class AI:
         best_move = None
 
 
-        # Move ordering ( better pruning)
+        # Move ordering
         moves = list(board.legal_moves)
         moves.sort(key=lambda move: board.is_capture(move), reverse=True)
 
@@ -36,7 +36,7 @@ class AI:
                 board.push(move)
                 eval, _ = self.minimax(board, depth - 1, alpha, beta, False)
                 board.pop()
-
+#higher score= best move
                 if eval > max_eval:
                     max_eval = eval
                     best_move = move

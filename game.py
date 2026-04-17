@@ -6,6 +6,7 @@ class Game:
         self.valid_moves = []
         self.promotion_move = None
         self.awaiting_promotion = False
+        self.move_descriptions = []
 
     def select(self, square):
         if self.awaiting_promotion:
@@ -25,7 +26,9 @@ class Game:
                         self.promotion_move = move
                         self.awaiting_promotion = True
                         return
+                    desc = self.get_move_description(move)
                     self.board.push(move)
+                    self.move_descriptions.append(desc)
             self.selected = None
             self.valid_moves = []
 
@@ -34,3 +37,26 @@ class Game:
         return piece and piece.piece_type == chess.PAWN and (
             chess.square_rank(move.to_square) in [0,7]
         )
+
+    def get_move_description(self, move):
+        piece = self.board.piece_at(move.from_square)
+
+        if not piece:
+            return ""
+
+        color = "W" if piece.color else "B"
+
+        names = {
+            chess.PAWN: "P",
+            chess.KNIGHT: "N",
+            chess.BISHOP: "B",
+            chess.ROOK: "R",
+            chess.QUEEN: "Q",
+            chess.KING: "K"
+        }
+
+        piece_name = names[piece.piece_type]
+
+        to_square = chess.square_name(move.to_square)
+
+        return f"{color} {piece_name} moved to {to_square}"
