@@ -25,6 +25,15 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        #scroll
+        if event.type == pygame.MOUSEWHEEL:
+            game.scroll_offset -= event.y * 20
+            max_scroll = max(0, len(game.move_descriptions) * 25 - 600)
+
+            if game.scroll_offset < 0:
+                game.scroll_offset = 0
+            if game.scroll_offset > max_scroll:
+                game.scroll_offset = max_scroll
 
         #  KEYBOARD
         if event.type == pygame.KEYDOWN:

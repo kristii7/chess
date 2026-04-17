@@ -7,6 +7,7 @@ class Game:
         self.promotion_move = None
         self.awaiting_promotion = False
         self.move_descriptions = []
+        self.scroll_offset = 0
 
     def select(self, square):
         if self.awaiting_promotion:

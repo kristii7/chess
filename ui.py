@@ -51,19 +51,24 @@ class UI:
             )
 
     def draw_move_history(self, game):
-        moves = game.move_descriptions
-
         start_x = 660
-        start_y = 50
-        line_height = 28
-        max_lines = 18
+        start_y = 80
 
-        visible_moves = moves[-max_lines:]
+        line_height = 25
 
-        for i, text in enumerate(visible_moves):
-            y = start_y + i * line_height
-            label = self.font.render(f"{i + 1}. {text}", True, WHITE)
-            self.screen.blit(label, (start_x, y))
+        # background panel
+        pygame.draw.rect(self.screen, (30, 30, 30), (640, 0, 260, 720))
+
+        for i, text in enumerate(game.move_descriptions):
+            y = start_y + i * line_height - game.scroll_offset
+
+            # only draw visible area (prevents ghost overlap)
+            if 0 <= y <= 700:
+                label = self.font.render(f"{i + 1}. {text}", True, WHITE)
+                self.screen.blit(label, (start_x, y))
+
+
+
 
 
 
