@@ -80,8 +80,10 @@ while running:
 
     #  DRAWING
     ui.draw_board()
+    ui.draw_coordinates()
     ui.highlight_moves(game.valid_moves)
     ui.draw_pieces(game.board)
+    ui.highlight_check(game.board)
 
     #  selected square highlight
     if game.selected is not None:
@@ -92,6 +94,7 @@ while running:
 
 
     ui.draw_move_history(game)
+    ui.draw_captured_pieces(game.board)
 
 
     if game.awaiting_promotion:
@@ -99,8 +102,7 @@ while running:
 
 
 
-    #  check or checkmate message
-    # clear message area every frame
+    # check/checkmate
     pygame.draw.rect(screen, BLACK, (0, HEIGHT - 60, WIDTH, 60))
 
     if game.board.is_checkmate():
