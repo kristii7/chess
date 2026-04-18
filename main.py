@@ -100,8 +100,16 @@ while running:
 
 
     #  check or checkmate message
+    # clear message area every frame
+    pygame.draw.rect(screen, BLACK, (0, HEIGHT - 60, WIDTH, 60))
+
     if game.board.is_checkmate():
-        ui.show_message("CHECKMATE")
+        winner = "BLACK WINS" if game.board.turn else "WHITE WINS"
+        ui.show_message(f"{winner} - CHECKMATE")
+
+    elif game.board.is_stalemate():
+        ui.show_message("STALEMATE")
+
     elif game.board.is_check():
         ui.show_message("CHECK")
 

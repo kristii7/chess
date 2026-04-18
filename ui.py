@@ -67,11 +67,6 @@ class UI:
                 label = self.font.render(f"{i + 1}. {text}", True, WHITE)
                 self.screen.blit(label, (start_x, y))
 
-
-
-
-
-
     def draw_promotion_popup(self):
         pygame.draw.rect(self.screen, (200, 200, 200), (160, 200, 320, 80))
         pieces = ['q', 'r', 'b', 'n']
@@ -79,7 +74,9 @@ class UI:
             img = self.images['w' + p]
             self.screen.blit(img, (180 + i * 70, 210))
 
-
     def show_message(self, text, color=RED):
+        # clear message area first
+        pygame.draw.rect(self.screen, BLACK, (0, HEIGHT - 60, WIDTH, 60))
+
         label = self.big_font.render(text, True, color)
-        self.screen.blit(label, (WIDTH//2 - label.get_width()//2, HEIGHT-45))
+        self.screen.blit(label, (WIDTH // 2 - label.get_width() // 2, HEIGHT - 45))
