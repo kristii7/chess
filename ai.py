@@ -5,6 +5,15 @@ class AI:
         self.depth = depth
 
     def evaluate(self, board):
+        #Game-ending states FIRST
+        if board.is_checkmate():
+            if board.turn:  # side to move is checkmated
+                return -9999
+            else:
+                return 9999
+
+        if board.is_stalemate() or board.is_insufficient_material():
+            return 0
         values = {
             chess.PAWN: 1,
             chess.KNIGHT: 3,
@@ -16,6 +25,7 @@ class AI:
         for piece,val in values.items():
             score += len(board.pieces(piece, chess.WHITE)) * val
             score -= len(board.pieces(piece, chess.BLACK)) * val
+
         return score
 
     def minimax(self, board, depth, alpha, beta, maximizing):

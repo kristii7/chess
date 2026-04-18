@@ -18,6 +18,7 @@ ai = AI(depth=4)
 running = True
 
 # MAIN LOOP
+
 while running:
     clock.tick(60)
 
@@ -64,7 +65,7 @@ while running:
                 continue
 
 
-            if game.board.turn and y < WIDTH:
+            if game.board.turn and y < BOARD_SIZE:
                 col = x // SQ_SIZE
                 row = y // SQ_SIZE
                 square = chess.square(col, 7 - row)
@@ -105,9 +106,17 @@ while running:
     # check/checkmate
     pygame.draw.rect(screen, BLACK, (0, HEIGHT - 60, WIDTH, 60))
 
+
+
     if game.board.is_checkmate():
         winner = "BLACK WINS" if game.board.turn else "WHITE WINS"
         ui.show_message(f"{winner} - CHECKMATE")
+
+    elif game.board.can_claim_threefold_repetition():
+        ui.show_message("DRAW - REPETITION")
+
+    elif game.board.can_claim_fifty_moves():
+        ui.show_message("DRAW - 50 MOVE RULE")
 
     elif game.board.is_stalemate():
         ui.show_message("STALEMATE")

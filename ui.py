@@ -51,19 +51,36 @@ class UI:
             )
 
     def draw_move_history(self, game):
-        start_x = 650
+        start_x = BOARD_SIZE + 20
         start_y = 10
 
         line_height = 25
 
+
         # background panel
-        pygame.draw.rect(self.screen, (30, 30, 30), (640, 0, 260, 720))
+        pygame.draw.rect(
+            self.screen,
+            (134, 136, 138),
+            (BOARD_SIZE, 0, PANEL_WIDTH, BOARD_SIZE)
+        )
+
+        #move history and capture divider
+        divider_x = BOARD_SIZE + 260  # adjust this if needed
+
+        pygame.draw.line(
+            self.screen,
+            (80, 80, 80),
+            (divider_x, 0),
+            (divider_x, BOARD_SIZE),
+            2
+        )
+
 
         for i, text in enumerate(game.move_descriptions):
             y = start_y + i * line_height - game.scroll_offset
 
-            # only draw visible area (prevents ghost overlap)
-            if 0 <= y <= 700:
+            # only draw visible area
+            if 0 <= y <= BOARD_SIZE - 20:
                 label = self.font.render(f"{i + 1}. {text}", True, WHITE)
                 self.screen.blit(label, (start_x, y))
 
@@ -139,7 +156,7 @@ class UI:
             captured_white += [piece_type] * (count - white_left)
             captured_black += [piece_type] * (count - black_left)
 
-        start_x = 910
+        start_x = BOARD_SIZE + 280
         y_white = 10
         y_black = 360
 
