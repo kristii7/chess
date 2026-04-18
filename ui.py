@@ -51,7 +51,7 @@ class UI:
             )
 
     def draw_move_history(self, game):
-        start_x = 910
+        start_x = 650
         start_y = 10
 
         line_height = 25
@@ -139,7 +139,7 @@ class UI:
             captured_white += [piece_type] * (count - white_left)
             captured_black += [piece_type] * (count - black_left)
 
-        start_x = 660
+        start_x = 910
         y_white = 10
         y_black = 360
 
