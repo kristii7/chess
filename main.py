@@ -40,9 +40,17 @@ while running:
         if event.type == pygame.KEYDOWN:
             # Undo last two moves (player + AI)
             if event.key == pygame.K_u:
-                for _ in range(2):
-                    if len(game.board.move_stack) > 0:
-                        game.board.pop()
+                if len(game.board.move_stack) > 0:
+                    game.board.pop()
+
+                if len(game.move_descriptions) > 0:
+                    game.move_descriptions.pop()
+
+                if len(game.board.move_stack) > 0 and not game.board.turn:
+                    game.board.pop()
+
+                if len(game.move_descriptions) > 0:
+                    game.move_descriptions.pop()
 
             # Restart game
             if event.key == pygame.K_r:

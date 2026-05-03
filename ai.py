@@ -5,9 +5,9 @@ class AI:
         self.depth = depth
 
     def evaluate(self, board):
-        #Game-ending states FIRST
+        #checkmate
         if board.is_checkmate():
-            if board.turn:  # side to move is checkmated
+            if board.turn:
                 return -9999
             else:
                 return 9999
@@ -66,7 +66,7 @@ class AI:
                 board.push(move)
                 eval, _ = self.minimax(board, depth - 1, alpha, beta, True)
                 board.pop()
-
+#pick best move
                 if eval < min_eval:
                     min_eval = eval
                     best_move = move
